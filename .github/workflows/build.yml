@@ -9,4 +9,4 @@ jobs:
       - name: build and run
         run: make clean
              make out/example
-             make out
+             make test
