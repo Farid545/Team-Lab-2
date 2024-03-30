@@ -1,0 +1,12 @@
+name: Team lab 2
+
+on: [push]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: build and run
+        run: make clean
+        run: make out/example
+        run: make out
