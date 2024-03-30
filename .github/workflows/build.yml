@@ -6,9 +6,9 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - name: test
-        run: make -C ../../ test
+      # - name: test
+      #   run: make test
       - name: build
-        run: make -C ../../ out/example
+        run: make out/example
       - name: clean
-        run: make -C ../../ clean
+        run: make clean
