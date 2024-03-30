@@ -8,5 +8,5 @@ jobs:
     steps:
       - name: build and run
         run: make clean
-        run: make out/example
-        run: make out
+             make out/example
+             make out
