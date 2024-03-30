@@ -1,7 +1,7 @@
 default: out/example
 
 clean:
-	rm .\out
+	rm -rf .\out
 
 test: *.go
 	go test ./...
