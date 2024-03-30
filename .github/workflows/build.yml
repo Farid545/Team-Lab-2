@@ -7,8 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: test
-        run: make test
+        run: make -C ../../ test
       - name: build
-        run: make out/example
+        run: make -C ../../ out/example
       - name: clean
-        run: make clean
+        run: make -C ../../ clean
