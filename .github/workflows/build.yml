@@ -6,10 +6,11 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-      # - name: test
-      #   run: make test
       - name: build
         run: pwd
              make out/example
+      - name: test
+        run: make test
       - name: clean
-        run: make clean
+        run: pwd
+             make clean
