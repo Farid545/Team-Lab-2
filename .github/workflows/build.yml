@@ -4,9 +4,11 @@ on: [push]
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
-      - name: build and run
+      - name: clean
         run: make clean
-             make out/example
-             make test
+      - name: build
+        run: make out/example
+      - name: test
+        run: make test
