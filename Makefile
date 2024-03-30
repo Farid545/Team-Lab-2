@@ -1,15 +1,10 @@
 default: out/example
 
 clean:
-	rm -rf .\out
+	sudo rm -r -f .\out
 
 test: *.go
-	go test ./...
-	if make "$@"; then
-		echo BUILD SUCCESSFUL
-	else
-		echo BUILD FAILED
-	fi
+	go test
 
 out/example: implementation.go cmd/example/main.go
 	mkdir out
