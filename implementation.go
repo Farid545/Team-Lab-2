@@ -1,12 +1,13 @@
 package lab2
 
 import (
+	"fmt"
+	"math"
 	"strconv"
 	"strings"
 )
 
 type Stack []string
-type operationFunc func(int, int) int
 
 // IsEmpty: check if stack is empty
 func (s *Stack) IsEmpty() bool {
@@ -15,7 +16,7 @@ func (s *Stack) IsEmpty() bool {
 
 // Push a new value onto the stack
 func (s *Stack) Push(str string) {
-	*s = append(*s, str) // Simply append the new value to the end of the stack
+	*s = append(*s, str)
 }
 
 // Remove and return top element of stack. Return false if stack is empty.
@@ -23,51 +24,57 @@ func (s *Stack) Pop() (string, bool) {
 	if s.IsEmpty() {
 		return "", false
 	} else {
-		index := len(*s) - 1   // Get the index of the top most element.
-		element := (*s)[index] // Index into the slice and obtain the element.
-		*s = (*s)[:index]      // Remove it from the stack by slicing it off.
+		index := len(*s) - 1
+		element := (*s)[index]
+		*s = (*s)[:index]
 		return element, true
 	}
 }
 
+// OperandCheck checks if character is numer
 func OperandCheck(character byte) bool {
 	operands := "123456789"
 	return strings.ContainsRune(operands, rune(character))
 }
 
-// TODO: document this function.
-// PrefixEvaluate converts
+// PrefixEvaluate evlauate prefix expression
 func PrefixEvaluate(input string) (string, error) {
 	var stack Stack
-	var res int
+	var res float64
 
-	operations := map[byte]operationFunc{
-		'+': func(num1, num2 int) int { return num1 + num2 },
-		'-': func(num1, num2 int) int { return num1 - num2 },
-		'*': func(num1, num2 int) int { return num1 * num2 },
-		'/': func(num1, num2 int) int { return num1 / num2 },
+	operations := map[byte]func(float64, float64) float64{
+		'+': func(num1, num2 float64) float64 { return num1 + num2 },
+		'-': func(num1, num2 float64) float64 { return num1 - num2 },
+		'*': func(num1, num2 float64) float64 { return num1 * num2 },
+		'/': func(num1, num2 float64) float64 { return num1 / num2 },
+		'^': func(num1, num2 float64) float64 { return math.Pow(num1, num2) },
 	}
-
 	for i := len(input) - 1; i >= 0; i-- {
 		if input[i] != ' ' {
+
 			if OperandCheck(input[i]) {
 				stack.Push(string(input[i]))
 			} else {
-				value1, _ := stack.Pop()
-				value2, _ := stack.Pop()
+				opFunc := operations[input[i]]
+				value1, ok1 := stack.Pop()
+				value2, ok2 := stack.Pop()
 
-				num1, _ := strconv.Atoi(value1)
-				num2, _ := strconv.Atoi(value2)
-
-				if opFunc, exists := operations[input[i]]; exists {
-					res = opFunc(num1, num2)
-					stack.Push(strconv.Itoa(res))
+				if !ok1 || !ok2 {
+					return "", fmt.Errorf("Pop fails")
 				}
 
+				num1, _ := strconv.ParseFloat(value1, 64)
+				num2, _ := strconv.ParseFloat(value2, 64)
+				res = opFunc(num1, num2)
+
+				stack.Push(strconv.FormatFloat(res, 'f', -1, 64))
 			}
 		}
-
 	}
 
-	return strconv.Itoa(res), nil
+	result, ok := stack.Pop()
+	if !ok {
+		return "", fmt.Errorf("Pop fails")
+	}
+	return result, nil
 }
