@@ -33,7 +33,7 @@ func (s *Stack) Pop() (string, bool) {
 
 // OperandCheck checks if character is numer
 func OperandCheck(character byte) bool {
-	operands := "123456789"
+	operands := "0123456789"
 	return strings.ContainsRune(operands, rune(character))
 }
 
