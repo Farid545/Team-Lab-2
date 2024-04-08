@@ -6,8 +6,12 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: build
-        run: make out/example
+        run: |
+		cd $GITHUB_WORKSPACE
+		make out/example
       - name: test
         run: make test
       - name: clean
